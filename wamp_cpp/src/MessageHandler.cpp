@@ -72,7 +72,7 @@ void MessageHandler::receiveMessage(std::string client, std::string msg)
 	if ( !parsingSuccessful )
 	{
 		std::cout  << "Failed to parse configuration\n"
-			<< reader.getFormatedErrorMessages();
+			<< reader.getFormattedErrorMessages();
 		return;
 	}
 

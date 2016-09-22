@@ -1,19 +1,18 @@
-#ifndef JSON_H_
-#define JSON_H_
+
+#ifndef JSONCONVERT_H_
+#define JSONCONVERT_H_
 
 #include <functional>
 #include <vector>
 
-#include <jsoncpp/json/value.h>
-#include <jsoncpp/json/reader.h>
-#include <jsoncpp/json/writer.h>
+#include <json/json.h>
 
 typedef std::function<Json::Value(std::vector<Json::Value>)> RemoteProcedure;
 
 template<class T>
 T convertJson(Json::Value& val)
 {
-	return T();
+  return T();
 }
 
 template<>
@@ -31,4 +30,4 @@ bool convertJson<bool>(Json::Value& val);
 template<>
 Json::Value convertJson<Json::Value>(Json::Value& val);
 
-#endif
+#endif //JSONCONVERT_H_

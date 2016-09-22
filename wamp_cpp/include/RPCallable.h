@@ -7,8 +7,9 @@
 #include <map>
 #include <type_traits>
 
-#include "Json.h"
+#include <json/json.h>
 #include "Directory.h"
+#include "JsonConvert.h"
 
 template<int... Is>
 struct seq { };

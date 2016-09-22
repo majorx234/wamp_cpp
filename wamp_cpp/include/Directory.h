@@ -2,8 +2,10 @@
 #define DIRECTORY_H_
 
 #include <map>
+#include <functional>
 
-#include "Json.h"
+#include <json/json.h>
+typedef std::function<Json::Value(std::vector<Json::Value>)> RemoteProcedure;
 
 /**
  * Singleton

@@ -3,7 +3,7 @@
 #include <websocketpp/config/asio_no_tls.hpp>
 #include <websocketpp/server.hpp>
 
-#include <boost/bimap.hpp>
+//#include <boost/bimap.hpp>
 
 #include "MessageHandler.h"
 
@@ -28,8 +28,8 @@ public:
 	// pull out the type of messages sent by our config
 	typedef server::message_ptr message_ptr;
 
-	//typedef std::set<connection_hdl,std::owner_less<connection_hdl>> con_list;
-	typedef std::set<connection_hdl> con_list;
+	typedef std::set<connection_hdl,std::owner_less<connection_hdl>> con_list;
+	//typedef std::set<connection_hdl> con_list;
 
 	WAMPServer();
 
@@ -55,7 +55,9 @@ private:
 	server wserver;
 	con_list connections;
 	MessageHandler handler;
-	boost::bimap<std::string, connection_hdl> clients;
+	std::map<std::string, connection_hdl> clients;
+	std::map<connection_hdl, std::string, std::owner_less<connection_hdl>> clients_reverse;
+	//boost::bimap<std::string, connection_hdl> clients;
 	bool debug;
 };
 

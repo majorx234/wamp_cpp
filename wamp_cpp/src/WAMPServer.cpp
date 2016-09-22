@@ -10,7 +10,7 @@
 #include "Directory.h"
 
 using namespace std;
-using namespace boost::filesystem;
+//using namespace boost::filesystem;
 
 WAMPServer::WAMPServer()
 : basedir(""), debug(false) {
@@ -21,7 +21,9 @@ void WAMPServer::on_message(websocketpp::connection_hdl hdl, message_ptr msg) {
 		cout << "Message received " << msg->get_payload() << endl;
 	}
 
-	handler.receiveMessage(clients.right.at(hdl),msg->get_payload());
+	//bla handler.receiveMessage(clients.right.at(hdl), msg->get_payload());
+	//substitiution for boost::bimap
+	handler.receiveMessage(clients_reverse[hdl], msg->get_payload());
 }
 
 void WAMPServer::setDebug(bool enable) {
@@ -32,7 +34,7 @@ void WAMPServer::on_http(websocketpp::connection_hdl hdl) {
     	server::connection_ptr con = wserver.get_con_from_hdl(hdl);
 
 	try {
-		path request;
+		boost::filesystem::path request;
 
 		if(basedir == "")
 		{
@@ -41,7 +43,7 @@ void WAMPServer::on_http(websocketpp::connection_hdl hdl) {
 
 		string resource = con->get_resource();
 		size_t found = resource.find_first_of("?#");
-		request = canonical(basedir.string()+resource.substr(0,found)); //will throw exception if file not exists!
+		request = boost::filesystem::canonical(basedir.string()+resource.substr(0,found)); //will throw exception if file not exists!
 
 		if (request.string().compare(0, basedir.string().length(), basedir.string()) != 0)
 		{
@@ -99,14 +101,14 @@ void WAMPServer::on_http(websocketpp::connection_hdl hdl) {
 }
 
 void WAMPServer::setBaseDir(std::string dir) {
-    basedir = canonical(dir); //will throw exception if file not exists!
+    basedir = boost::filesystem::canonical(dir); //will throw exception if file not exists!
 }
 
 
 bool WAMPServer::validate(connection_hdl hdl) {
 	server::connection_ptr con = wserver.get_con_from_hdl(hdl);
 
-	//std::cout << "Cache-Control: " << con->get_request_header("Cache-Control") << std::endl;
+	std::cout << "Cache-Control: " << con->get_request_header("Cache-Control") << std::endl;
 
 	const std::vector<std::string> & subp_requests = con->get_requested_subprotocols();
 	std::vector<std::string>::const_iterator it;
@@ -142,8 +144,12 @@ void WAMPServer::on_open(connection_hdl hdl) {
 	connections.insert(hdl);
 	try {
 		string sessionId = generateRandomString();
-		stringstream ss;
-		clients.insert(boost::bimap< std::string, connection_hdl >::value_type(sessionId,hdl));
+		std::stringstream ss;
+		//bla clients.insert(boost::bimap< std::string, connection_hdl >::value_type(sessionId,hdl));
+		//substituion code for boost::bimap
+		clients.insert(std::make_pair(sessionId, hdl));
+    clients_reverse.insert(std::make_pair(hdl,sessionId));
+
 		ss << "[0, \"" << sessionId << "\", 1, \"wamp_cpp/0.0.0.1\"]";
 		wserver.send(hdl, ss.str(), websocketpp::frame::opcode::text);
 		Directory::getInstance().connectionEstablished(sessionId);
@@ -164,15 +170,27 @@ void WAMPServer::send(std::string client, std::string msg)
 	}
 
 	try {
-		auto hdl = clients.left.at(client);
+		//bla auto hdl = clients.left.at(client);
+		/*bla
 		if(!hdl.lock().get())
 		{
 			cout << "Session to " << client << " finished" << endl;
-			clients.left.erase(client);
+			//bla clients.left.erase(client);
+			return;
+		}*/
+
+		//bla wserver.send(hdl, msg, websocketpp::frame::opcode::text);
+    //substitiution for boost::bimap
+    auto hdl = clients[client];
+    if(!hdl.lock().get())
+		{
+			cout << "Session to " << client << " finished" << endl;
+			//bla clients.left.erase(client);
 			return;
 		}
 
 		wserver.send(hdl, msg, websocketpp::frame::opcode::text);
+
 	} catch (const websocketpp::lib::error_code& e) {
 		std::cout << "Send failed because: " << e  
 			<< " (" << e.message() << ")" << std::endl;
