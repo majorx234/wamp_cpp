@@ -5,7 +5,7 @@ project(wamp_cpp)
 
 find_package(Jsoncpp REQUIRED)
 find_package(websocketpp REQUIRED)
-
+find_package(Boost COMPONENTS system filesystem REQUIRED)
 
 set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(ALL_LIBS "")
@@ -13,6 +13,7 @@ set(ALL_LIBS "")
 include_directories(${PROJECT_INCLUDE_DIR})
 include_directories(${Jsoncpp_INCLUDE_DIR})
 include_directories(${WEBSOCKETPP_INCLUDE_DIR})
+include_directories(${Boost_INCLUDE_DIR})
 
 SET(CMAKE_CXX_FLAGS "-std=c++11")
 add_compile_options(-std=c++11)
@@ -47,6 +48,7 @@ add_library(wamp_cpp
 target_link_libraries(wamp_cpp 
                       ${websocketpp_LIBRARY} 
                       ${JSONCPP_LIBRARIES}
+                      ${Boost_LIBRARIES}  
                       )
 
 export(PACKAGE wamp_cpp)
