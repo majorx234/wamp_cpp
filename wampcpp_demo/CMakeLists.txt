@@ -41,5 +41,5 @@ target_link_libraries(wampcpp_demo
                       ${CMAKE_THREAD_LIBS_INIT}
                       )
 
-INSTALL(TARGETS wampcpp_demo
-	RUNTIME DESTINATION ${PROJECT_BINARY_DIR}/bin)
+# INSTALL(TARGETS wampcpp_demo
+#	RUNTIME DESTINATION ${PROJECT_BINARY_DIR}/bin)

@@ -41,7 +41,7 @@ set(WAMP_CPP_HEADERFILES
   ${CMAKE_CURRENT_SOURCE_DIR}/include/JsonConvert.h
 )
 
-add_library(wamp_cpp 
+add_library(wamp_cpp SHARED
              ${WAMP_CPP_SOURCFILES}
              )
 
@@ -60,6 +60,6 @@ configure_file (wamp_cpp-config.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIR
 
 install (FILES
   "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/wamp_cpp-config.cmake"
-  DESTINATION "${INSTALL_CMAKE_DIR}" COMPONENT dev)
-
-
+  DESTINATION cmake/wamp_cpp)
+install(TARGETS wamp_cpp DESTINATION lib)
+install(TARGETS ${WAMP_CPP_HEADERFILES} DESTINATION include)
