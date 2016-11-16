@@ -20,11 +20,13 @@ include(FindPackageHandleStandardArgs)
 # find the include directories.
  # only look in default directories
 find_path(
-  WAMPCPP_INCLUDE_DIR 
-  NAMES WAMPServer.h
-  PATHS ${WAMPCPPLIB_ROOT_DIR}/include
+  WAMPCPP_INCLUDE_DIR
+  NAMES wamp_cpp/WAMPServer.h
+  HINTS
+   /usr/include
   DOC "wamp_cpp include dir"
  )
+
 
 find_library(
   WAMPCPP_LIBRARY
