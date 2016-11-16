@@ -60,6 +60,12 @@ configure_file (wamp_cpp-config.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIR
 
 install (FILES
   "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/wamp_cpp-config.cmake"
-  DESTINATION cmake/wamp_cpp)
+  DESTINATION ${CMAKE_MODULE_PATH}/wamp_cpp)
+
+install (FILES
+  "${CMAKE_CURRENT_SOURCE_DIR}/CMakeModules/FindWampcpp.cmake"
+  DESTINATION ${CMAKE_MODULE_PATH}) 
+
 install(TARGETS wamp_cpp DESTINATION lib)
-install(TARGETS ${WAMP_CPP_HEADERFILES} DESTINATION include)
+
+install(FILES ${WAMP_CPP_HEADERFILES} DESTINATION include/wamp_cpp)
