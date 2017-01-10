@@ -58,10 +58,6 @@ set(WAMP_CPP_LIBRARY wamp_cpp PARENT_SCOPE)
 
 configure_file (wamp_cpp-config.cmake.in "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/wamp_cpp-config.cmake" @ONLY)
 
-
-MESSAGE( STATUS "CMAKE_MODULE_PATH:         " ${CMAKE_MODULE_PATH} )
-MESSAGE( STATUS "OLD_CMAKE_MODULE_PATH:         " ${OLD_CMAKE_MODULE_PATH} )
-
 install (FILES
   "${PROJECT_BINARY_DIR}${CMAKE_FILES_DIRECTORY}/wamp_cpp-config.cmake"
   DESTINATION "/usr/share/cmake-3.6/Modules/wamp_cpp")
